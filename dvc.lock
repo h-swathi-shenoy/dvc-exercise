@@ -1,0 +1,23 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python src/load.py IRIS.csv
+    deps:
+    - path: data/IRIS.csv
+      hash: md5
+      md5: bab8c78b12bd4b32b7964f775ed5a24d
+      size: 4617
+    - path: src/load.py
+      hash: md5
+      md5: 33b82dc4d15a05384e9da1bb10663a2a
+      size: 1103
+    params:
+      params.yaml:
+        load.random_state: 42
+        load.split: 0.2
+    outs:
+    - path: data/prepared
+      hash: md5
+      md5: bbd4449f5ce3cf5d85d6527f910647ad.dir
+      size: 5174
+      nfiles: 2

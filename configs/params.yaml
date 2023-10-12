@@ -1,0 +1,3 @@
+load:
+  split: 0.20
+  random_state: 42
