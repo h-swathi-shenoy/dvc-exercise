@@ -1,16 +1,16 @@
 schema: '2.0'
 stages:
   prepare:
-    cmd: python src/load.py IRIS.csv
+    cmd: python src/load.py raw/IRIS.csv
     deps:
-    - path: data/IRIS.csv
+    - path: data/raw/IRIS.csv
       hash: md5
       md5: bab8c78b12bd4b32b7964f775ed5a24d
       size: 4617
     - path: src/load.py
       hash: md5
-      md5: 33b82dc4d15a05384e9da1bb10663a2a
-      size: 1103
+      md5: df804cc8f1025690b5669ee4a7bd5921
+      size: 1309
     params:
       params.yaml:
         load.random_state: 42
@@ -18,6 +18,90 @@ stages:
     outs:
     - path: data/prepared
       hash: md5
-      md5: bbd4449f5ce3cf5d85d6527f910647ad.dir
-      size: 5174
+      md5: 207dc9fd2180fac24feb79044b797d50.dir
+      size: 5268
       nfiles: 2
+  features:
+    cmd: python src/features.py data/prepared processed encoder features
+    deps:
+    - path: data/prepared/train.csv
+      hash: md5
+      md5: 6cf863956b327227f7094a2a7952e459
+      size: 4190
+    - path: src/features.py
+      hash: md5
+      md5: ac0abc3f1231cb0dd2e31c826ed2585f
+      size: 3225
+    params:
+      params.yaml:
+        features.max_features: 3
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 9f0b1fb1918629aac86d1ac2a4c4b6fe.dir
+      size: 8966
+      nfiles: 2
+    - path: models/encoder
+      hash: md5
+      md5: 77cbfe4c9ee38c59d7dc361f6c6fe1f7.dir
+      size: 931
+      nfiles: 2
+    - path: models/features
+      hash: md5
+      md5: 4974af979fbae2559cbe4763f4e5e6af.dir
+      size: 50
+      nfiles: 1
+  training:
+    cmd: python src/model.py data/processed artifacts features
+    deps:
+    - path: data/processed/encoded-labels.csv
+      hash: md5
+      md5: 44eef2177af8b8f84dfde20efd751a93
+      size: 368
+    - path: data/processed/train-norm.csv
+      hash: md5
+      md5: 483e54121a8c7533f0de1fe364a35e8e
+      size: 8598
+    - path: models/features/features.yaml
+      hash: md5
+      md5: ec74c54600c0e31b56273180ee74254a
+      size: 50
+    - path: src/model.py
+      hash: md5
+      md5: 88af05a862fbeaa9c66a70a84ff1b744
+      size: 1480
+    outs:
+    - path: models/artifacts
+      hash: md5
+      md5: 3d221b1f4747a6776ce69ef643f400c7.dir
+      size: 200766
+      nfiles: 1
+  inference:
+    cmd: python src/inference.py data/prepared features artifacts encoder
+    deps:
+    - path: data/prepared/test.csv
+      hash: md5
+      md5: 7a9525fd5a3289d9823708bf3171d60e
+      size: 1078
+    - path: models/artifacts/model.pkl
+      hash: md5
+      md5: f6aa9a3f13786bf1b36dbbb614968a4d
+      size: 200766
+    - path: models/encoder/label_encode.pkl
+      hash: md5
+      md5: 53962164b1e4861ab876460cabc1e6e3
+      size: 291
+    - path: models/encoder/scaler_encode.pkl
+      hash: md5
+      md5: 9ab4a339b07b1e35d8f08f79f25e2234
+      size: 640
+    - path: models/features/features.yaml
+      hash: md5
+      md5: ec74c54600c0e31b56273180ee74254a
+      size: 50
+    outs:
+    - path: data/evaluate
+      hash: md5
+      md5: 53288949f028afb094e626f3fd294b7b.dir
+      size: 180
+      nfiles: 1

@@ -8,10 +8,12 @@ class PathConfig:
     base_path: t.Optional[Path] = Path(__file__).absolute().parent.parent.parent
     data_dir: t.Optional[Path] = None
     configs_dir: t.Optional[Path] = None
+    models_dir: t.Optional[Path] = None
 
     def __post_init__(self):
         self.data_dir = self.base_path.joinpath('data')
         self.configs_dir = self.base_path.joinpath('configs')
+        self.models_dir = self.base_path.joinpath('models')
 
     def to_dict(self):
         path = asdict(self)

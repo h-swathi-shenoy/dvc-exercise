@@ -1,0 +1,4 @@
+[core]
+    remote = datastore
+['remote "datastore"']
+    url = s3://dvc-exercise

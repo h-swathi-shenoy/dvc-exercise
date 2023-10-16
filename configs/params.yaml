@@ -1,3 +1,8 @@
 load:
   split: 0.20
   random_state: 42
+  features: ['sepal_length', 'sepal_width', 'petal_length', 'petal_width','target']
+features:
+  max_features: 3
+training:
+  random_state: 42
