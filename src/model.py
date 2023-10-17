@@ -1,12 +1,13 @@
-import sys
 import os
-import pandas as pd
 import pickle
-from sklearn.ensemble import RandomForestClassifier
-from utils.pathfinder import PathConfig
-from omegaconf import OmegaConf
+import sys
+import xgboost as xgb
+import pandas as pd
 import yaml
+from omegaconf import OmegaConf
+from sklearn.ensemble import RandomForestClassifier
 
+from utils.pathfinder import PathConfig
 
 path = PathConfig()
 configs_dir = path.configs_dir
@@ -30,12 +31,12 @@ def train_model(features: pd.DataFrame, target: pd.DataFrame) -> None:
     """
     features_df = pd.read_csv(features)
     target_df  = pd.read_csv(target)
-    rf_class = RandomForestClassifier(random_state=params.random_state)
+    xgb_class = xgb.XGBClassifier(params.random_state)
     with open(features_dir.joinpath("features.yaml"), "r") as stream:
         feats = yaml.safe_load(stream)
-    rf_class.fit(features_df[feats.values()].values, target_df.values)
+    xgb_class.fit(features_df[feats.values()].values, target_df.values)
     filename = 'model.pkl'
-    pickle.dump(rf_class, open(artifacts_dir.joinpath(filename),'wb'))
+    pickle.dump(xgb_class, open(artifacts_dir.joinpath(filename),'wb'))
     return
 
 

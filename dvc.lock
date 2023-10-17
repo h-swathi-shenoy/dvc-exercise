@@ -68,13 +68,13 @@ stages:
       size: 50
     - path: src/model.py
       hash: md5
-      md5: 88af05a862fbeaa9c66a70a84ff1b744
-      size: 1480
+      md5: 2fb284c142d9575226a3cc98d23192aa
+      size: 1488
     outs:
     - path: models/artifacts
       hash: md5
-      md5: 3d221b1f4747a6776ce69ef643f400c7.dir
-      size: 200766
+      md5: 03f1f47aa0466666a588e4207b5a9732.dir
+      size: 245553
       nfiles: 1
   inference:
     cmd: python src/inference.py data/prepared features artifacts encoder
@@ -85,8 +85,8 @@ stages:
       size: 1078
     - path: models/artifacts/model.pkl
       hash: md5
-      md5: f6aa9a3f13786bf1b36dbbb614968a4d
-      size: 200766
+      md5: 42d04f30fc7c48bfeb85bbce6ddc6ea3
+      size: 245553
     - path: models/encoder/label_encode.pkl
       hash: md5
       md5: 53962164b1e4861ab876460cabc1e6e3
