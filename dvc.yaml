@@ -2,33 +2,33 @@ stages:
   prepare:
     cmd: python src/load.py raw/IRIS.csv
     deps:
-      - data/raw/IRIS.csv
-      - src/load.py
+    - data/raw/IRIS.csv
+    - src/load.py
     params:
-      - load.split
-      - load.random_state
+    - load.split
+    - load.random_state
     outs:
-      - data/prepared
+    - data/prepared
   features:
     cmd: python src/features.py data/prepared processed encoder features
     deps:
-      - data/prepared/train.csv
-      - src/features.py
+    - data/prepared/train.csv
+    - src/features.py
     params:
-      - features.max_features
+    - features.max_features
     outs:
-      - data/processed
-      - models/encoder
-      - models/features
+    - data/processed
+    - models/encoder
+    - models/features
   training:
     cmd: python src/model.py data/processed artifacts features
     deps:
-      - data/processed/train-norm.csv
-      - data/processed/encoded-labels.csv
-      - models/features/features.yaml
-      - src/model.py
+    - data/processed/train-norm.csv
+    - data/processed/encoded-labels.csv
+    - models/features/features.yaml
+    - src/model.py
     outs:
-      - models/artifacts
+    - models/artifacts
   inference:
     cmd: python src/inference.py data/prepared features artifacts encoder
     deps:
@@ -37,5 +37,5 @@ stages:
       - models/artifacts/model.pkl
       - models/encoder/scaler_encode.pkl
       - models/encoder/label_encode.pkl
-    outs:
-      - data/evaluate
+    metrics:
+      - data/evaluate/metrics.json
